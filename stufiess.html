@@ -1,0 +1,714 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Stuffiess — Butterfly Digital Store</title>
+<meta name="theme-color" content="#111016" />
+<style>
+  :root{
+    --pink:#ff3b98;
+    --pink-2:#ff7abf;
+    --pink-soft:#ffd3ec;
+    --rose:#fc6ea6;
+    --ink:#111016;          /* hitam keunguan */
+    --ink-2:#181823;
+    --ink-3:#232338;
+    --muted:#b7b7c6;
+    --card:#181823aa;
+    --shadow: 0 20px 60px rgba(0,0,0,.35);
+    --radius:16px;
+    --ring: 0 0 0 2px #ff3b9866 inset;
+    --grad-hero: radial-gradient(1200px 600px at 10% -10%, #47122c 0%, transparent 40%),
+                 radial-gradient(1000px 600px at 90% 0%, #2b0b2b 0%, transparent 45%),
+                 linear-gradient(180deg, #0b0b11 0%, #12101a 70%, #0c0b12 100%);
+    --grad-pinkdark: linear-gradient(135deg, #1a1020 0%, #111016 50%, #1a0e18 100%);
+    --grad-pinkline: linear-gradient(90deg, #ff2f92, #ff6bb7, #b84bff);
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0;background:var(--grad-hero);color:#f5f5fb;
+    font: 15px/1.5 Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    letter-spacing:.2px;
+  }
+  a{color:#fff;text-decoration:none}
+  .container{max-width:1200px;margin:0 auto;padding:0 20px}
+
+  /* NAVBAR */
+  header.nav{position:sticky;top:0;z-index:50;background:linear-gradient(180deg, rgba(0,0,0,.55), rgba(0,0,0,0));
+    backdrop-filter: blur(8px);}
+  .nav-inner{display:flex;align-items:center;justify-content:space-between;padding:14px 0;}
+  .brand{display:flex;align-items:center;gap:12px}
+  .logo{width:40px;height:40px;border-radius:999px;overflow:hidden;display:grid;place-items:center;background:#fff;}
+  .logo img {width:100%;height:100%;object-fit:cover;display:block;}
+  .brand h1{margin:0;font-size:18px;font-weight:800;background:var(--grad-pinkline);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .navlinks{display:flex;gap:8px;align-items:center}
+  .chip{border:1px solid #312b3f;background:#1a1626;color:#eae7f5;padding:8px 12px;border-radius:999px;cursor:pointer}
+  .chip.active{background:linear-gradient(90deg,#ff3794,#b84bff);border-color:transparent}
+  .cart-btn{display:flex;align-items:center;gap:8px;background:linear-gradient(90deg,#ff3794,#b84bff);
+    padding:8px 14px;border:0;border-radius:999px;cursor:pointer;box-shadow:0 6px 24px rgba(255,59,152,.25)}
+  .cart-btn span{opacity:.9}
+
+  /* HERO (Netflix style) */
+  .hero{
+    position:relative;min-height:54svh;border-radius:24px;margin:18px 0;padding:28px;overflow:hidden;
+    background:
+      radial-gradient(1200px 420px at 0% 100%, rgba(255,59,152,.18) 0%, transparent 60%),
+      radial-gradient(1000px 420px at 100% 0%, rgba(184,75,255,.15) 0%, transparent 60%),
+      var(--grad-pinkdark);
+    box-shadow: var(--shadow);
+    display:grid;grid-template-columns:1.2fr .8fr;gap:16px;
+  }
+  @media (max-width:940px){.hero{grid-template-columns:1fr}}
+  .hero h2{margin:0 0 8px;font-size:40px;letter-spacing:.5px}
+  .hero p{margin:6px 0 14px;color:#d8d6e6}
+  .cta{display:flex;flex-wrap:wrap;gap:10px;margin-top:8px}
+  .btn{
+    padding:12px 16px;border-radius:12px;border:0;cursor:pointer;font-weight:700;
+  }
+  .btn-primary{background:linear-gradient(90deg,#ff2f92,#ff67b6);color:#170b19}
+  .btn-ghost{background:transparent;border:1px solid #3a2f46;color:#f1d8eb}
+  .hero-art{
+    position:relative;border-radius:18px;overflow:hidden;background:linear-gradient(180deg,#1f1424,#100c13);
+    border:1px solid #2b1f33;display:grid;place-items:center
+  }
+  .float-butterfly{
+    position:absolute;inset:auto -30px -40px auto;width:160px;height:160px;opacity:.2;
+    background:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="220" height="220" viewBox="0 0 24 24" fill="none" stroke="%23ff67b6" stroke-width="1.2"><path d="M12 12c-3-6-9-6-9-2 0 4 6 6 9 2Z"/><path d="M12 12c3-6 9-6 9-2 0 4-6 6-9 2Z"/><circle cx="12" cy="12" r="1.2"/><path d="M12 11V8"/></svg>') center/contain no-repeat;
+    filter: blur(.2px);
+  }
+
+  /* SECTION TITLE */
+  .section-head{display:flex;align-items:center;justify-content:space-between;margin:18px 0 10px}
+  .section-head h3{margin:0;font-size:20px}
+  .bar{height:2px;background:var(--grad-pinkline);border-radius:999px;opacity:.7}
+
+  /* ROW (HORIZONTAL SCROLL) */
+  .row{display:flex;overflow:auto;scroll-snap-type:x proximity}
+  .row{display:grid;grid-template-columns:repeat(5, 1fr);gap:12px;padding-bottom:8px;}
+  .card{
+    width: 100%;
+    background:#1a1724;
+    border:1px solid #2c2440;
+    border-radius:14px;
+    overflow:hidden;
+    box-shadow:0 10px 30px rgba(0,0,0,.25);
+    transition:transform .18s ease, box-shadow .18s ease;
+    cursor:pointer;
+  }
+  .card:hover{transform:translateY(-6px);box-shadow:0 18px 50px rgba(255,59,152,.15)}
+  .thumb{height:110px;background:#0f0d14;display:grid;place-items:center}
+  .thumb img{max-width:90%;max-height:90%;object-fit:contain;filter: drop-shadow(0 6px 18px rgba(255,59,152,.15))}
+  .meta{padding:10px}
+  .meta h4{margin:0 0 4px;font-size:14px}
+  .meta .tiny{font-size:12px;color:var(--muted)}
+  .meta .act{margin-top:8px;display:flex;gap:8px}
+  .btn-mini{flex:1;padding:8px;border-radius:10px;border:1px solid #3a2f46;background:#221b2c;color:#f5e9f4;cursor:pointer}
+  .btn-mini.buy{background:linear-gradient(90deg,#ff3794,#b84bff);border-color:transparent;color:#1b0e1b;font-weight:800}
+
+  /* CATEGORY CHIPS */
+  .cat-filter{display:flex;gap:8px;flex-wrap:wrap}
+  .cat-filter .chip{border-color:#3a2f46}
+  .cat-filter .chip.aplikasi{background:linear-gradient(90deg,#ff3b98,#b84bff10);border-color:#ff3b9822}
+  .cat-filter .chip.streaming{background:linear-gradient(90deg,#ff3b98,#ff6bb722);border-color:#ff7abf28}
+  .cat-filter .chip.listening{background:linear-gradient(90deg,#b84bff,#ff6bb722);border-color:#8d6bff28}
+  .cat-filter .chip.education{background:linear-gradient(90deg,#ff6bb7,#ff3b9815);border-color:#ff6bb728}
+  .cat-filter .chip.other{background:linear-gradient(90deg,#b84bff,#ff3b9815);border-color:#b84bff28}
+
+  /* MODAL (creative) */
+  .backdrop{position:fixed;inset:0;background:rgba(5,4,9,.74);
+    backdrop-filter: blur(6px) saturate(120%);display:flex;align-items:center;justify-content:center;z-index:60}
+  .modal{
+    width:min(720px,92vw);background:
+      radial-gradient(600px 220px at 100% 0%, rgba(184,75,255,.18) 0%, transparent 60%),
+      radial-gradient(600px 220px at 0% 100%, rgba(255,59,152,.18) 0%, transparent 60%),
+      #140f18ee;
+    border:1px solid #3a2f46;border-radius:18px;box-shadow: var(--shadow);overflow:hidden;display:grid;grid-template-columns:240px 1fr
+  }
+  @media (max-width:720px){.modal{grid-template-columns:1fr}}
+  .modal-left{background:#0f0b12;display:grid;place-items:center;padding:18px;border-right:1px solid #2b2238}
+  .modal-left .cover{
+    width:200px;height:200px;border-radius:18px;display:grid;place-items:center;
+    background:radial-gradient(120px 100px at 40% 30%, rgba(255,59,152,.25) 0%, transparent 60%), #120d16;
+    border:1px solid #342844
+  }
+  .modal-left img{max-width:78%;max-height:78%}
+  .modal-right{padding:18px}
+  .modal-right h3{margin:0 0 4px}
+  .sub{color:var(--muted);font-size:13px}
+  .variations{display:grid;gap:8px;margin:12px 0}
+  .var{
+    display:flex;justify-content:space-between;align-items:center;gap:10px;
+    border:1px solid #3a2f46;background:#1a1521;border-radius:12px;padding:10px
+  }
+  .var .left{display:flex;align-items:center;gap:8px}
+  .radio{width:16px;height:16px;border-radius:999px;border:1px solid #5b4a73;display:inline-grid;place-items:center}
+  .radio span{width:9px;height:9px;border-radius:999px;background:linear-gradient(90deg,#ff3794,#b84bff);opacity:0;transition:opacity .15s}
+  input[type="radio"]:checked + .radio span{opacity:1}
+  .pill{font-size:12px;padding:6px 10px;border-radius:999px;background:#241b2c;border:1px solid #3a2f46}
+  .modal-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
+  .qty{display:flex;align-items:center;gap:8px;background:#1b1422;border:1px solid #3a2f46;border-radius:12px;padding:8px}
+  .qty input{width:56px;padding:8px;border-radius:8px;border:1px solid #3a2f46;background:#110d15;color:#fff}
+  .addcart{flex:1}
+  .btn-wide{width:100%}
+  .close-x{position:absolute;right:10px;top:10px;background:#201828;border:1px solid #3a2f46;border-radius:10px;padding:6px 10px;cursor:pointer}
+
+  /* CART (floating) */
+  .cart{
+    position:fixed;right:20px;bottom:20px;width:340px;background:#161221ee;border:1px solid #352a46;
+    border-radius:16px;box-shadow: var(--shadow);z-index:55;display:none
+  }
+  .cart header{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-bottom:1px solid #2c2440}
+  .cart h4{margin:0}
+  .cart .items{max-height:280px;overflow:auto}
+  .cart .row{display:block;overflow:visible;padding:0}
+  .citem{display:grid;grid-template-columns:40px 1fr auto;gap:10px;align-items:center;padding:12px 14px;border-bottom:1px dashed #2e2440}
+  .citem img{width:40px;height:40px;object-fit:contain}
+  .cmeta{font-size:13px}
+  .cmeta .name{color:#ffe1f1}
+  .cmeta .var{color:#bdb6cb}
+  .cqty{display:flex;align-items:center;gap:6px}
+  .cqty input{width:50px;background:#110d15;border:1px solid #3a2f46;border-radius:8px;color:#fff;padding:6px}
+  .remove{background:none;border:0;color:#ff739f;cursor:pointer;font-size:12px}
+  .cart footer{padding:12px 14px}
+  .sum{display:flex;justify-content:space-between;margin:6px 0}
+  .checkout{display:block;text-align:center;padding:12px;border-radius:12px;background:linear-gradient(90deg,#ff3794,#b84bff);color:#1b0e1b;font-weight:800}
+
+  /* FOOTER w/ REGULATIONS */
+  footer.site{margin:28px 0 18px;padding:18px;border-radius:18px;border:1px solid #2b2238;background:#151021}
+  .reg{display:grid;grid-template-columns:2fr 1fr 1fr;gap:18px}
+  @media (max-width:900px){.reg{grid-template-columns:1fr}}
+  .muted{color:#bdb6cb}
+  .list{margin:8px 0 0 16px}
+
+</style>
+</head>
+<body>
+  <header class="nav">
+    <div class="container nav-inner">
+      <div class="brand">
+        <div class="logo">
+          <img src="Stuffies.png" alt="Stuffiess Logo" class="suffies-img">
+        </div>
+        <h1>Stuffiess</h1>
+      </div>
+      <nav class="navlinks">
+        <button class="chip active" id="btn-home">Home</button>
+        <button class="chip" id="btn-shop">Katalog</button>
+        <button class="chip" id="btn-about">Tentang</button>
+        <button class="cart-btn" id="btn-cart">Keranjang <span>(<span id="cart-count">0</span>)</span></button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- HERO ala Netflix -->
+    <section id="page-home">
+      <div class="hero">
+        <div>
+          <h2>Terbang Lebih Tinggi Bersama Aplikasi Impianmu</h2>
+          <p>Maksimalkan kreativitas dan hiburanmu dengan ribuan aplikasi premium, harga terjangkau, dan tanpa beban.</p>
+          <div class="cta">
+            <button class="btn btn-primary" id="cta-start">Mulai Belanja</button>
+            <button class="btn btn-ghost" id="cta-about">Lihat Regulasi</button>
+          </div>
+          <div style="margin-top:18px">
+            <div class="cat-filter">
+              <button class="chip aplikasi" data-cat="EDITING">Editing</button>
+              <button class="chip streaming" data-cat="STREAMING">Streaming</button>
+              <button class="chip listening" data-cat="LISTENING">Listening</button>
+              <button class="chip education" data-cat="EDUCATION">Education</button>
+              <button class="chip education" data-cat="MEDSOS">Medsos</button>
+              <button class="chip education" data-cat="TOP UP">Top Up</button>
+              <button class="chip other" data-cat="OTHER APP">Other App</button>
+            </div>
+          </div>
+        </div>
+        <div class="hero-art">
+          <div class="float-butterfly"></div>
+          <img src="gambar header.png" alt="Showcase" style="max-width:92%;border-radius:14px;opacity:.95">
+        </div>
+      </div>
+
+      <!-- showcase rows like Netflix -->
+      <div class="section-head">
+        <h3>Direkomendasikan</h3>
+        <div class="bar" style="flex:1;margin-left:10px"></div>
+      </div>
+      <div class="row" id="row-reco"></div>
+    </section>
+
+    <!-- SHOP (semua kategori, setiap kategori = satu baris horizontal) -->
+    <section id="page-shop" style="display:none">
+      <div class="section-head"><h3>Katalog Stuffiess</h3><div class="bar" style="flex:1;margin-left:10px"></div></div>
+      <div id="rows-container"></div>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="page-about" style="display:none">
+      <div class="section-head"><h3>Tentang & Regulasi</h3><div class="bar" style="flex:1;margin-left:10px"></div></div>
+      <footer class="site">
+        <div class="reg">
+          <div>
+            <h4 style="margin:0 0 6px">Regulasi</h4>
+            <ul class="list muted">
+              <li>Patuhi <strong>syarat & ketentuan</strong> yang sudah ditulis.</li>
+              <li>Screenshoot <strong>1×12 jam</strong> berlaku untuk garansi.</li>
+              <li><strong>Tidak ada refund</strong>, kecuali untuk kasus <strong>backfree</strong>.</li>
+              <li><strong>Dilarang keras</strong> menonton menggunakan VPN.</li>
+              <li>Otak-atik akun akan dikenakan <strong>denda Rp100.000</strong>.</li>
+            </ul>
+          </div>
+          <div>
+            <h4 style="margin:0 0 6px">Layanan</h4>
+            <ul class="list muted">
+              <li>Support cepat via WhatsApp.</li>
+              <li>Privasi pelanggan diutamakan.</li>
+              <li>Harga transparan, tanpa biaya tersembunyi.</li>
+            </ul>
+          </div>
+          <div>
+            <h4 style="margin:0 0 6px">Kontak</h4>
+            <div class="muted">Admin Stuffiess — WhatsApp:<br>
+              <a id="wa-about" href="#" target="_blank">+62 858-6400-9281</a>
+            </div>
+          </div>
+        </div>
+      </footer>
+    </section>
+  </main>
+
+  <!-- CART FLOAT -->
+  <div class="cart" id="cart">
+    <header>
+      <h4>Keranjang</h4>
+      <button class="remove" id="close-cart">Tutup ✕</button>
+    </header>
+    <div class="items" id="cart-items"></div>
+    <footer>
+      <div class="sum"><span>Subtotal</span><strong id="cart-sub">-</strong></div>
+      <a class="checkout" id="checkout-wa" href="#" target="_blank">Checkout via WhatsApp</a>
+      <div class="muted" style="font-size:12px;margin-top:8px">*Subtotal otomatis dari harga yang berakhiran <em>k</em> (Contoh. 4k = 4.000)</div>
+    </footer>
+  </div>
+
+  <!-- MODAL ROOT -->
+  <div id="modal-root"></div>
+
+<script>
+/* ===========================
+   DATA
+=========================== */
+const SHOP_OWNER_WHATSAPP = "+62 858-6400-9281"; // nomor WA
+const APP_IMAGES = {
+  "Alight Motion":"Alight.png",
+  "Canva":"canva.png",
+  "Capcut":"capcut.png",
+  "Ibis Paint":"ibispaint.png",
+  "Lightroom":"lightroom.png",
+  "Meitu":"meitu.png",
+  "Picsart":"piscart.png",
+  "Polar":"polar.png",
+  "Remini":"remini.png",
+  "VSCO":"vsco.png",
+  "Wink":"wink.png",
+  "Old Roll" : "OldRoll.png",
+  // streaming
+  "Bstation":"bstation.png",
+  "Disney":"disney.png",
+  "Drakor.Id":"drakorid.png",
+  "Dramabox":"dramabox.png",
+  "HBO":"hbo.png",
+  "Iqiyi":"iqiyi.png",
+  "Loklok":"loklok.png",
+  "Movie box":"moviebox.png",
+  "Netflix":"netflix.png",
+  "Prime Video":"primevideo.png",
+  "Vidio Platinum":"video.png",
+  "Vision+":"vision+.png",
+  "Viu":"viu.png",
+  "WeTV":"wetv.png",
+  "Wibuku":"wibuku.png",
+  "Youku":"youku.png",
+  "YouTube":"youtube.png",
+  // listening
+  "Apple Music":"applemusic.png",
+  "Spotify":"spotify.png",
+  // education 
+  "Duolingo":"duolingo.png",
+  "GEMINI":"gemini.png",
+  "GPT":"chatgpt.png",
+  "Scribd":"scrbd.png",
+  // medsos
+  "Instagram":"instagram.png",
+  "TikTok":"tiktok.png",
+  // other app
+  "GetContact":"getcontact.png",
+  "Google Drive":"gdrive.png",
+  "Wattpad":"wattpad.png",
+};
+
+const CATALOG = {
+  "EDITING":[
+    {name:"Alight Motion", variations:["1 month sharing : 2k","1 year private email buyer : 5k"]},
+    {name:"Canva", variations:["1 month member : 1k","1 month admin : 3k"]},
+    {name:"Capcut", variations:["1 day sharing : 3k","1 week sharing : 5k","1 month sharing : 7k","1 month private : 9k"]},
+    {name:"Ibis Paint", variations:["1 month sharing : 9k","1 year sharing : 15k"]},
+    {name:"Lightroom", variations:["1 month sharing : 13k","1 year sharing : 20k"]},
+    {name:"Meitu", variations:["1 month sharing : 15k","1 month private : 28k"]},
+    {name:"Picsart", variations:["1 month sharing : 5k","1 month private : 7k"]},
+    {name:"Polar", variations:["1 day sharing : 4k","1 year sharing : 13k"]},
+    {name:"Remini", variations:["1 month sharing web : 8k","1 month sharing app : 15k"]},
+    {name:"VSCO", variations:["1 year sharing : 12k"]},
+    {name:"Wink", variations:["1 week priv andro : 15k","1 month sharing andro : 23k","1 month sharing ios : 23k"]},
+    {name:"Old Roll", variations:["Life time : 10k"]},
+  ],
+  "STREAMING":[
+    {name:"Bstation", variations:["1 day sharing : 3k","1 month sharing : 7k","1 year sharing : 13k"]},
+    {name:"Disney", variations:["3 day sharing : 5k","1 week sharing : 9k","1 month sharing : 14k"]},
+    {name:"Drakor.Id", variations:["1 month sharing : 10k","1 year sharing : 17k"]},
+    {name:"Dramabox", variations:["1 month sharing : 10k","1 year sharing : 32k"]},
+    {name:"HBO", variations:["1 week sharing : 10k","1 month sharing : 15k"]},
+    {name:"Iqiyi", variations:["1 bulan sharing plan : 8k","1 year sharing plan : 14k"]},
+    {name:"Loklok", variations:["1 month sharing : 12k","1 month private : 17k"]},
+    {name:"Movie box", variations:["1 month sharing : 8k","1 year sharing andro : 12k"]},
+    {name:"Netflix", variations:["1 day 1 user : 3k","1 day 2 user : 2.5k","1 week 1 user : 10k","1 week 2 user : 9k","1 month 1 user : 20k","1 month 2 user : 15k"]},
+    {name:"Prime Video", variations:["1 month sharing : 6k","1 month private : 10k"]},
+    {name:"Vidio Platinum", variations:["7 day sharing : 7k","1 month sharing : 13k"]},
+    {name:"Vision+", variations:["1 month private : 15k"]},
+    {name:"Viu", variations:["1 month private : 2k","1 year : 4k"]},
+    {name:"WeTV", variations:["1 day sharing : 3k","1 month sharing : 8k","1 month sharing : 10k","1 month private : 27k"]},
+    {name:"Wibuku", variations:["1 month sharing : 7k","1 year sharing : 13k"]},
+    {name:"Youku", variations:["1 day sharing : 3k","1 month sharing : 6k","1 year sharing : 15k"]},
+    {name:"YouTube", variations:["1 month famplan : 3k","1 month indplan : 5k"]},
+  ],
+  "LISTENING":[
+    {name:"Apple Music", variations:["1 month famplan : 6k","1 month famhead : 10k"]},
+    {name:"Spotify", variations:["1 month famplan : 15k","1 month indplan : 17k"]},
+  ],
+  "EDUCATION":[
+    {name:"Duolingo", variations:["1 month famplan : 8k","1 month indplan : 12k"]},
+    {name:"GEMINI", variations:["1 month sharing : 5k","1 month private : 7k"]},
+    {name:"GPT", variations:["1 week sharing : 16k","1 month plus invite : 30k"]},
+    {name:"Scribd", variations:["1 month sharing : 13k","1 month private : 17k"]},
+  ],
+  "MEDSOS":[
+    {name:"Instagram", variations:["100 Folls mutual login : 5k","100 Folls no login web : 4k","100 Likes no login bot : 2k","100 Likes no login indo : 6k"]},
+    {name:"TikTok", variations:["100 Folls mutual login : 5k","100 Folls no login web : 4k","100 Likes no login : 2k","1000 Views no login : 1k"]},
+  ],
+  "TOP UP":[
+
+  ],
+  "OTHER APP":[
+    {name:"GetContact", variations:["1 month : 10k"]},
+    {name:"Google Drive", variations:["1 month 300gb : 15k","1 month 2tb : 35k"]},
+    {name:"Wattpad", variations:["1 month sharing : 13k"]},
+  ]
+};
+
+/* ===========================
+   STATE
+=========================== */
+const state = {
+  cart: [], // { key, product, variation, priceText, qty }
+};
+
+/* ===========================
+   ELEMENTS
+=========================== */
+const el = {
+  home: document.getElementById('page-home'),
+  shop: document.getElementById('page-shop'),
+  about: document.getElementById('page-about'),
+  btnHome: document.getElementById('btn-home'),
+  btnShop: document.getElementById('btn-shop'),
+  btnAbout: document.getElementById('btn-about'),
+  rows: document.getElementById('rows-container'),
+  rowReco: document.getElementById('row-reco'),
+  cart: document.getElementById('cart'),
+  cartItems: document.getElementById('cart-items'),
+  cartSub: document.getElementById('cart-sub'),
+  cartCount: document.getElementById('cart-count'),
+  btnCart: document.getElementById('btn-cart'),
+  closeCart: document.getElementById('close-cart'),
+  checkoutWa: document.getElementById('checkout-wa'),
+  modalRoot: document.getElementById('modal-root'),
+  ctaStart: document.getElementById('cta-start'),
+  ctaAbout: document.getElementById('cta-about'),
+  waAbout: document.getElementById('wa-about'),
+};
+el.waAbout.href = waLink();
+
+/* ===========================
+   NAV
+=========================== */
+function show(page){
+  el.home.style.display = page==='home' ? 'block' : 'none';
+  el.shop.style.display = page==='shop' ? 'block' : 'none';
+  el.about.style.display = page==='about' ? 'block' : 'none';
+  [el.btnHome, el.btnShop, el.btnAbout].forEach(b=>b.classList.remove('active'));
+  if(page==='home') el.btnHome.classList.add('active');
+  if(page==='shop') el.btnShop.classList.add('active');
+  if(page==='about') el.btnAbout.classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+el.btnHome.onclick = ()=>show('home');
+el.btnShop.onclick = ()=>{ show('shop'); renderShopRows(); };
+el.btnAbout.onclick = ()=>show('about');
+el.btnCart.onclick = ()=> toggleCart(true);
+el.closeCart.onclick = ()=> toggleCart(false);
+el.ctaStart.onclick = ()=>{ show('shop'); renderShopRows(); };
+el.ctaAbout.onclick = ()=> show('about');
+document.querySelectorAll('.cat-filter .chip').forEach(c=>{
+  c.addEventListener('click',()=>{
+    show('shop');
+    renderShopRows(c.dataset.cat);
+  });
+});
+
+/* ===========================
+   RENDER HOME RECO + SHOP ROWS
+=========================== */
+function makeCard(item){
+  const wrap = document.createElement('div');
+  wrap.className = 'card';
+  wrap.innerHTML = `
+    <div class="thumb"><img src="${APP_IMAGES[item.name] || 'https://via.placeholder.com/240x140?text=Stuffiess'}" alt="${item.name}"></div>
+    <div class="meta">
+      <h4>${item.name}</h4>
+      <div class="tiny">Klik untuk lihat harga</div>
+      <div class="act">
+        <button class="btn-mini" data-act="detail">Detail</button>
+        <button class="btn-mini buy" data-act="buy">Beli</button>
+      </div>
+    </div>
+  `;
+  wrap.querySelector('[data-act="detail"]').onclick = ()=> openModal(item);
+  wrap.querySelector('[data-act="buy"]').onclick = ()=> openModal(item, true);
+  return wrap;
+}
+
+function renderHomeReco(){
+  el.rowReco.innerHTML = '';
+  // Ambil 2 item pertama dari tiap kategori untuk rekomendasi
+  Object.keys(CATALOG).forEach(cat=>{
+    (CATALOG[cat] || []).slice(0,2).forEach(p=>{
+      el.rowReco.appendChild(makeCard(p));
+    });
+  });
+}
+
+function renderShopRows(focusCat){
+  el.rows.innerHTML = '';
+  const cats = Object.keys(CATALOG);
+  cats.forEach(cat=>{
+    if(focusCat && cat !== focusCat) return;
+    const head = document.createElement('div');
+    head.className = 'section-head';
+    head.innerHTML = `<h3>${cat}</h3><div class="bar" style="flex:1;margin-left:10px"></div>`;
+    el.rows.appendChild(head);
+
+    const row = document.createElement('div');
+    row.className = 'row';
+    (CATALOG[cat] || []).forEach(p=> row.appendChild(makeCard(p)));
+    el.rows.appendChild(row);
+  });
+}
+
+/* ===========================
+   MODAL
+=========================== */
+function openModal(product, preselectFirst=false){
+  el.modalRoot.innerHTML = '';
+  const back = document.createElement('div');
+  back.className = 'backdrop';
+
+  const modal = document.createElement('div');
+  modal.className = 'modal';
+
+  const left = document.createElement('div');
+  left.className = 'modal-left';
+  left.innerHTML = `
+    <button class="close-x" aria-label="Tutup">✕</button>
+    <div class="cover"><img src="${APP_IMAGES[product.name] || ''}" alt="${product.name}"></div>
+  `;
+
+  const right = document.createElement('div');
+  right.className = 'modal-right';
+  right.innerHTML = `
+    <h3>${product.name}</h3>
+    <div class="sub">Pilih variasi paket</div>
+    <div class="variations"></div>
+    <div class="modal-actions">
+      <div class="qty">
+        <span>Qty</span>
+        <input id="qty-input" type="number" min="1" value="1">
+      </div>
+      <div class="addcart" style="flex:1">
+        <button class="btn btn-primary btn-wide" id="btn-add">Tambah ke Keranjang</button>
+      </div>
+      <button class="btn btn-ghost" id="btn-close">Batal</button>
+    </div>
+  `;
+
+  modal.appendChild(left); modal.appendChild(right); back.appendChild(modal); el.modalRoot.appendChild(back);
+
+  // build variations
+  const list = right.querySelector('.variations');
+  let selected = '';
+  product.variations.forEach((v,i)=>{
+    const row = document.createElement('label');
+    row.className = 'var';
+    row.innerHTML = `
+      <div class="left">
+        <input type="radio" name="opt" style="display:none" ${i===0 && preselectFirst ? 'checked':''}>
+        <span class="radio"><span></span></span>
+        <div>
+          <div style="font-weight:700">${v}</div>
+          <div class="sub">Akses cepat • Garansi aktif</div>
+        </div>
+      </div>
+      <span class="pill">${extractPriceText(v)}</span>
+    `;
+    const input = row.querySelector('input[type="radio"]');
+    const vis = row.querySelector('.radio');
+    const setCheck = (val)=>{ input.checked = true; selected = v; vis.querySelector('span').style.opacity=1; };
+    row.addEventListener('click',()=> setCheck(true));
+    list.appendChild(row);
+    if(i===0 && preselectFirst){ selected = v; }
+  });
+
+  function close(){ el.modalRoot.innerHTML=''; }
+  left.querySelector('.close-x').onclick = close;
+  right.querySelector('#btn-close').onclick = close;
+
+  right.querySelector('#btn-add').onclick = ()=>{
+    const qty = Math.max(1, Number(right.querySelector('#qty-input').value||1));
+    if(!selected){
+      // if none explicitly clicked, pick first
+      const first = list.querySelector('label');
+      if(first){ first.click(); }
+    }
+    const pick = selected || product.variations[0];
+    addToCart(product.name, pick, qty);
+    close();
+    toggleCart(true);
+  };
+
+  back.addEventListener('click', (e)=>{ if(e.target===back) close(); });
+}
+
+function extractPriceText(variation){
+  // ambil token terakhir (contoh: 4k, 8k, 2.5k)
+  const parts = variation.trim().split(/\s+/);
+  return parts[parts.length-1];
+}
+
+/* ===========================
+   CART
+=========================== */
+function addToCart(name, variation, qty=1){
+  const priceText = extractPriceText(variation);
+  const key = `${name}::${variation}`;
+  const existing = state.cart.find(x=>x.key===key);
+  if(existing){ existing.qty += qty; }
+  else state.cart.push({ key, product:name, variation, priceText, qty });
+  updateCartUI();
+}
+
+function removeFromCart(key){
+  state.cart = state.cart.filter(x=>x.key!==key);
+  updateCartUI();
+}
+function changeQty(key, val){
+  state.cart = state.cart.map(x=> x.key===key ? {...x, qty: Math.max(1, Number(val)||1)} : x);
+  updateCartUI();
+}
+
+function parsePriceToNumber(priceText){
+  if(!priceText) return NaN;
+  const s = priceText.toString().replace(/,/g,'.').trim();
+  const k = s.match(/^([0-9]+(?:\.[0-9]+)?)\s*[kK]$/); // 2k, 2.5k
+  if(k) return Math.round(parseFloat(k[1]) * 1000);
+  const p = s.match(/^([0-9]+)p$/i); // treat p as non-Rp
+  if(p) return NaN;
+  const num = parseFloat(s);
+  if(!isNaN(num)) return num;
+  return NaN;
+}
+function formatRupiah(num){
+  if(isNaN(num)) return '-';
+  return new Intl.NumberFormat('id-ID',{style:'currency',currency:'IDR',maximumFractionDigits:0}).format(num);
+}
+function calcSubtotal(){
+  let s = 0;
+  state.cart.forEach(it=>{
+    const n = parsePriceToNumber(it.priceText);
+    if(!isNaN(n)) s += n * it.qty;
+  });
+  return s;
+}
+function updateCartUI(){
+  el.cartItems.innerHTML = '';
+  let count = 0;
+  state.cart.forEach(it=>{
+    count += it.qty;
+    const row = document.createElement('div');
+    row.className = 'citem';
+    row.innerHTML = `
+      <img src="${APP_IMAGES[it.product] || ''}" alt="${it.product}">
+      <div class="cmeta">
+        <div class="name">${it.product}</div>
+        <div class="var">${it.variation}</div>
+      </div>
+      <div class="cqty">
+        <input type="number" min="1" value="${it.qty}">
+        <button class="remove">Hapus</button>
+      </div>
+    `;
+    row.querySelector('input').onchange = (e)=> changeQty(it.key, e.target.value);
+    row.querySelector('.remove').onclick = ()=> removeFromCart(it.key);
+    el.cartItems.appendChild(row);
+  });
+  el.cartCount.textContent = count;
+  const sub = calcSubtotal();
+  el.cartSub.textContent = sub ? formatRupiah(sub) : '-';
+  el.checkoutWa.href = generateWhatsAppLink();
+}
+
+function toggleCart(open){
+  el.cart.style.display = open ? 'block' : 'none';
+}
+
+/* ===========================
+   WHATSAPP
+=========================== */
+function waLink(){
+  const phone = SHOP_OWNER_WHATSAPP.replace(/\+/g,'').replace(/[^0-9]/g,'');
+  return phone ? `https://wa.me/${phone}` : '#';
+}
+function generateWhatsAppLink(){
+  const phone = SHOP_OWNER_WHATSAPP.replace(/\+/g,'').replace(/[^0-9]/g,'');
+  const lines = [];
+  lines.push('Halo Admin Stuffiess, saya mau order:');
+  state.cart.forEach(it=> lines.push(`- ${it.product} — ${it.variation} x${it.qty}`));
+  const sub = calcSubtotal();
+  if(sub>0) lines.push(`Subtotal: ${formatRupiah(sub)}`);
+  lines.push('');
+  lines.push('Nama pembeli:');
+  lines.push('Catatan/Email/ID (jika perlu):');
+  const text = encodeURIComponent(lines.join('\n'));
+  return phone ? `https://wa.me/${phone}?text=${text}` : '#';
+}
+
+/* ===========================
+   INIT
+=========================== */
+renderHomeReco();
+renderShopRows(); // pre-render (akan difilter saat pindah)
+updateCartUI();
+
+</script>
+</body>
+</html>
